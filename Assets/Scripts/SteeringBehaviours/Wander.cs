@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wander : SteeringBehaviour
+public class Wander : MovementBehaviour
 {
     public Transform agent;
     public float maxAngleDelta;
@@ -18,17 +18,17 @@ public class Wander : SteeringBehaviour
         timeToChooseNewDirectionOn = Time.time;
     }
 
-    public override SteeringData GetSteering(SteeringData currentSteering)
+    public override MovementData GetMovement(MovementData currentMovement)
     {
         if(Time.time >= timeToChooseNewDirectionOn)
         {
-            ChooseNewDirection(currentSteering.angle);
+            ChooseNewDirection(currentMovement.angle);
             timeToChooseNewDirectionOn = Time.time + timeBetweenDirections;
         }
 
-        SteeringData result = new SteeringData();
-        float angleToTargetDirection = Vector2.SignedAngle(currentSteering.angle, targetDirection);
-        result.angle = Rotate(currentSteering.angle, Mathf.Clamp(angleToTargetDirection,-rotatingSpeed * Time.deltaTime, rotatingSpeed * Time.deltaTime));
+        MovementData result = new MovementData();
+        float angleToTargetDirection = Vector2.SignedAngle(currentMovement.angle, targetDirection);
+        result.angle = Rotate(currentMovement.angle, Mathf.Clamp(angleToTargetDirection,-rotatingSpeed * Time.deltaTime, rotatingSpeed * Time.deltaTime));
 
         result.velocity = result.angle * speed;
 

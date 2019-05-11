@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ApplySteeringBehaviour : MonoBehaviour
+public class ApplyMovementBehaviour : MonoBehaviour
 {
     public Transform agent;
-    public SteeringBehaviour steeringBehaviour;
+    public MovementBehaviour steeringBehaviour;
 
-    SteeringData currentSteering;
+    MovementData currentMovement;
 
     private void Awake()
     {
-        currentSteering.velocity = Vector2.zero;
-        currentSteering.angle = transform.up;
+        currentMovement.velocity = Vector2.zero;
+        currentMovement.angle = transform.up;
     }
 
     void Update()
     {
-        SteeringData newSteering = steeringBehaviour.GetSteering(currentSteering);
+        MovementData newSteering = steeringBehaviour.GetMovement(currentMovement);
 
         // Change position according to velocity
         Vector3 velocity = newSteering.velocity;
@@ -27,6 +27,6 @@ public class ApplySteeringBehaviour : MonoBehaviour
         {
             agent.rotation = Quaternion.LookRotation(Vector3.forward, newSteering.angle);
         }
-        currentSteering = newSteering;
+        currentMovement = newSteering;
     }
 }

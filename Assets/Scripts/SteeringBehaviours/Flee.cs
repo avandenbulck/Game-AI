@@ -6,9 +6,9 @@ using UnityEngine;
 public class Flee : Seek
 {
    
-    public override SteeringData GetSteering(SteeringData currentSteering)
+    public override MovementData GetMovement(MovementData currentSteering)
     {
-        SteeringData result = base.GetSteering(currentSteering);
+        MovementData result = base.GetMovement(currentSteering);
 
         result.velocity *= -1;
         result.angle *= -1;

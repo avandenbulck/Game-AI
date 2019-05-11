@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Seek : SteeringBehaviour
+public class Seek : MovementBehaviour
 {
     public Transform agent;
     public Transform target;
     public float speed;
    
-    public override SteeringData GetSteering(SteeringData currentSteering)
+    public override MovementData GetMovement(MovementData currentSteering)
     {
-        SteeringData result = new SteeringData();
+        MovementData result = new MovementData();
 
         Vector2 distanceVector = DistanceVectorToTarget();
        
