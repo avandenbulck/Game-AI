@@ -18,8 +18,6 @@ public class Wander : SteeringBehaviour
 
         result.rotationAngle = rotationAngle;
 
-        Debug.Log(rotationAngle);
-
         float angle = transform.rotation.eulerAngles.z;
         Vector2 velocity = new Vector2(-Mathf.Sin(angle * Mathf.Deg2Rad), Mathf.Cos(angle * Mathf.Deg2Rad)) * maxSpeed;
 
