@@ -4,12 +4,12 @@ using UnityEngine;
 
 public abstract class SteeringBehaviour : MonoBehaviour
 {
-    public abstract SteeringOutput GetSteering();
+    public abstract SteeringData GetSteering(SteeringData currentSteering);
 }
 
-public struct SteeringOutput
+public struct SteeringData
 {
     public Vector2 velocity;
-    public float rotationAngle;
+    public Vector2 angle;
 }
 

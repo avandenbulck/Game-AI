@@ -6,11 +6,12 @@ using UnityEngine;
 public class Flee : Seek
 {
    
-    public override SteeringOutput GetSteering()
+    public override SteeringData GetSteering(SteeringData currentSteering)
     {
-        SteeringOutput result = base.GetSteering();
+        SteeringData result = base.GetSteering(currentSteering);
 
-        result.velocity = -result.velocity;
+        result.velocity *= -1;
+        result.angle *= -1;
 
         return result;
     } 

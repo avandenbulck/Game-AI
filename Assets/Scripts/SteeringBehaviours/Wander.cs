@@ -5,24 +5,54 @@ using UnityEngine;
 public class Wander : SteeringBehaviour
 {
     public Transform agent;
-    public float maxSpeed;
-    public float maxRotationAngle;
+    public float maxAngleDelta;
+    public float rotatingSpeed;
+    public float timeBetweenDirections;
+    public float speed;
 
-    public override SteeringOutput GetSteering()
+    public Vector2 targetDirection;
+    float timeToChooseNewDirectionOn;
+
+    void Start()
     {
-        SteeringOutput result = new SteeringOutput();
+        timeToChooseNewDirectionOn = Time.time;
+    }
 
-        float random = Random.Range(0f, 1f);
+    public override SteeringData GetSteering(SteeringData currentSteering)
+    {
+        if(Time.time >= timeToChooseNewDirectionOn)
+        {
+            ChooseNewDirection(currentSteering.angle);
+            timeToChooseNewDirectionOn = Time.time + timeBetweenDirections;
+        }
 
-        float rotationAngle = RandomBinomial() * maxRotationAngle;
+        SteeringData result = new SteeringData();
+        float angleToTargetDirection = Vector2.SignedAngle(currentSteering.angle, targetDirection);
+        result.angle = Rotate(currentSteering.angle, Mathf.Clamp(angleToTargetDirection,-rotatingSpeed * Time.deltaTime, rotatingSpeed * Time.deltaTime));
 
-        result.rotationAngle = rotationAngle;
+        result.velocity = result.angle * speed;
 
-        float angle = transform.rotation.eulerAngles.z;
-        Vector2 velocity = new Vector2(-Mathf.Sin(angle * Mathf.Deg2Rad), Mathf.Cos(angle * Mathf.Deg2Rad)) * maxSpeed;
-
-        result.velocity = velocity;
+        Debug.DrawRay(agent.position, targetDirection);
         return result;
+    }
+
+    private void ChooseNewDirection(Vector2 currentVelocity)
+    {
+        float rotationAngle = RandomBinomial() * maxAngleDelta;
+        targetDirection = Rotate(currentVelocity, rotationAngle);
+        targetDirection.Normalize();
+    }
+
+    public static Vector2 Rotate(Vector2 vector, float degrees)
+    {
+        float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
+        float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
+
+        float tx = vector.x;
+        float ty = vector.y;
+        vector.x = (cos * tx) - (sin * ty);
+        vector.y = (sin * tx) + (cos * ty);
+        return vector;
     }
 
     public float RandomBinomial()

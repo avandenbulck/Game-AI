@@ -7,23 +7,18 @@ public class Seek : SteeringBehaviour
 {
     public Transform agent;
     public Transform target;
-    public float maxSpeed;
+    public float speed;
    
-    public override SteeringOutput GetSteering()
+    public override SteeringData GetSteering(SteeringData currentSteering)
     {
-        SteeringOutput result = new SteeringOutput();
-        if (target == null)
-            Debug.LogError("Can not seek without target");
-        else if (agent == null)
-            Debug.LogError("Can not seek without knowing own position");
-        else
-        {
-            Vector2 newVelocity = DistanceVectorToTarget();
-            newVelocity.Normalize();
-            newVelocity *= maxSpeed;
-            result.velocity = newVelocity;
-        }
+        SteeringData result = new SteeringData();
 
+        Vector2 distanceVector = DistanceVectorToTarget();
+       
+        distanceVector.Normalize();
+        result.velocity = distanceVector * speed;
+        result.angle = distanceVector;
+     
         return result;
     } 
 

@@ -6,14 +6,14 @@ public class Arrive : Seek
 {
     public float radius;
 
-    public override SteeringOutput GetSteering()
+    public override SteeringData GetSteering(SteeringData currentSteering)
     {
         if(DistanceVectorToTarget().magnitude <= radius)
         {
-            return new SteeringOutput();
+            return new SteeringData();
         }else
         {
-            return base.GetSteering();
+            return base.GetSteering(currentSteering);
         }
     }
 }

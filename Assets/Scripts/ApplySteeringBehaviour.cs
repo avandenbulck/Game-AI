@@ -6,24 +6,27 @@ public class ApplySteeringBehaviour : MonoBehaviour
 {
     public Transform agent;
     public SteeringBehaviour steeringBehaviour;
-    public bool useRotationAngle;
+
+    SteeringData currentSteering;
+
+    private void Awake()
+    {
+        currentSteering.velocity = Vector2.zero;
+        currentSteering.angle = transform.up;
+    }
 
     void Update()
     {
-        SteeringOutput output = steeringBehaviour.GetSteering();
+        SteeringData newSteering = steeringBehaviour.GetSteering(currentSteering);
 
         // Change position according to velocity
-        Vector3 velocity = output.velocity;
+        Vector3 velocity = newSteering.velocity;
         agent.position += velocity * Time.deltaTime;
 
-        // Change orientation to look at the direction of the velocity
-        if(velocity.magnitude > 0 && !useRotationAngle)
+        if (newSteering.angle.magnitude > 0)
         {
-            agent.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(-velocity.x, velocity.y) * Mathf.Rad2Deg);
-        }else if (useRotationAngle)
-        {
-            agent.Rotate(Vector3.forward * output.rotationAngle * Time.deltaTime);
+            agent.rotation = Quaternion.LookRotation(Vector3.forward, newSteering.angle);
         }
+        currentSteering = newSteering;
     }
-
 }
