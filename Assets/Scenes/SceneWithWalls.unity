@@ -550,9 +550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 667830516}
-  target: {fileID: 0}
-  speed: 1
-  rotatingSpeed: 50
+  target: {fileID: 667830516}
 --- !u!114 &667830513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,9 +565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 667830516}
   maxAngleDelta: 90
-  rotatingSpeed: 20
   timeBetweenDirections: 2
-  speed: 1
 --- !u!114 &667830514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,7 +601,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 667830516}
-  steeringBehaviour: {fileID: 667830514}
+  movementBehaviour: {fileID: 667830514}
+  speed: 1
+  rotationSpeed: 50
 --- !u!4 &667830516
 Transform:
   m_ObjectHideFlags: 0

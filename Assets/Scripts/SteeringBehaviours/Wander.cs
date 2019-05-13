@@ -6,9 +6,7 @@ public class Wander : MovementBehaviour
 {
     public Transform agent;
     public float maxAngleDelta;
-    public float rotatingSpeed;
     public float timeBetweenDirections;
-    public float speed;
 
     Vector2 targetDirection;
     float timeToChooseNewDirectionOn;
@@ -27,9 +25,9 @@ public class Wander : MovementBehaviour
         }
 
         MovementData result = new MovementData();
-        float angleToTargetDirection = Vector2.SignedAngle(currentMovement.angle, targetDirection);
-        result.angle = Rotate(currentMovement.angle, Mathf.Clamp(angleToTargetDirection,-rotatingSpeed * Time.deltaTime, rotatingSpeed * Time.deltaTime));
-        result.velocity = result.angle * speed;
+
+        result.angle = targetDirection;
+        result.velocity = targetDirection;
 
         Debug.DrawRay(agent.position, targetDirection);
         return result;
@@ -38,7 +36,7 @@ public class Wander : MovementBehaviour
     private void ChooseNewDirection(Vector2 currentAngle)
     {
         float rotationAngle = RandomBinomial() * maxAngleDelta;
-        targetDirection = Rotate(currentAngle, rotationAngle);
+        targetDirection = VectorUtilities.Rotate(currentAngle, rotationAngle);
         targetDirection.Normalize();
     }
 

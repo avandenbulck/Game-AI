@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ApplyMovementBehaviour : MonoBehaviour
 {
     public Transform agent;
-    public MovementBehaviour steeringBehaviour;
+    public MovementBehaviour movementBehaviour;
+    public float speed;
+    public float rotationSpeed;
 
     MovementData currentMovement;
 
@@ -17,16 +20,35 @@ public class ApplyMovementBehaviour : MonoBehaviour
 
     void Update()
     {
-        MovementData newSteering = steeringBehaviour.GetMovement(currentMovement);
+        // Get the desired velocity and angle
+        MovementData desiredMovement = movementBehaviour.GetMovement(currentMovement);
 
-        // Change position according to velocity
-        Vector3 velocity = newSteering.velocity;
-        agent.position += velocity * Time.deltaTime;
 
-        if (newSteering.angle.magnitude > 0)
+        // Apply the desired 
+        currentMovement = Apply(desiredMovement);
+        
+    }
+
+    private MovementData Apply(MovementData desiredMovement)
+    {
+        MovementData newMovement = new MovementData();
+
+        // Calculate and apply rotationAngle;
+        if (desiredMovement.angle != Vector2.zero)
         {
-            agent.rotation = Quaternion.LookRotation(Vector3.forward, newSteering.angle);
+            float desiredAngleInDegrees = Vector2.SignedAngle(currentMovement.angle, desiredMovement.angle);
+            newMovement.angle = VectorUtilities.Rotate(currentMovement.angle, Mathf.Clamp(desiredAngleInDegrees, -rotationSpeed * Time.deltaTime, rotationSpeed * Time.deltaTime));
+            agent.rotation = Quaternion.LookRotation(Vector3.forward, newMovement.angle);
         }
-        currentMovement = newSteering;
+        else
+        {
+            newMovement.angle = currentMovement.angle;
+        }
+
+        // Calculate and apply velocity
+        newMovement.velocity = newMovement.angle * desiredMovement.velocity.magnitude * speed;
+        agent.position += (Vector3)newMovement.velocity * Time.deltaTime;
+ 
+        return newMovement;
     }
 }

@@ -407,8 +407,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 669794046}
   target: {fileID: 596171018}
-  speed: 1
-  rotatingSpeed: 50
 --- !u!114 &669794045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,7 +420,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 669794046}
-  steeringBehaviour: {fileID: 669794044}
+  movementBehaviour: {fileID: 669794044}
+  speed: 1
+  rotationSpeed: 40
 --- !u!4 &669794046
 Transform:
   m_ObjectHideFlags: 0
@@ -708,9 +708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 1020197366}
   maxAngleDelta: 90
-  rotatingSpeed: 20
   timeBetweenDirections: 2
-  speed: 1
 --- !u!114 &1020197365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,7 +722,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 1020197366}
-  steeringBehaviour: {fileID: 1020197364}
+  movementBehaviour: {fileID: 1020197364}
+  speed: 1
+  rotationSpeed: 40
 --- !u!4 &1020197366
 Transform:
   m_ObjectHideFlags: 0
@@ -773,8 +773,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 1072179489}
   target: {fileID: 596171018}
-  speed: 1
-  rotatingSpeed: 50
 --- !u!114 &1072179488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,7 +786,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 1072179489}
-  steeringBehaviour: {fileID: 1072179487}
+  movementBehaviour: {fileID: 1072179487}
+  speed: 1
+  rotationSpeed: 40
 --- !u!4 &1072179489
 Transform:
   m_ObjectHideFlags: 0
@@ -916,8 +916,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 1320344715}
   target: {fileID: 596171018}
-  speed: 1
-  rotatingSpeed: 50
   radius: 1
 --- !u!114 &1320344714
 MonoBehaviour:
@@ -932,7 +930,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 1320344715}
-  steeringBehaviour: {fileID: 1320344713}
+  movementBehaviour: {fileID: 1320344713}
+  speed: 1
+  rotationSpeed: 40
 --- !u!4 &1320344715
 Transform:
   m_ObjectHideFlags: 0

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Flee : Seek
 {
-   
     public override MovementData GetMovement(MovementData currentSteering)
     {
         MovementData result = base.GetMovement(currentSteering);
