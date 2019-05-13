@@ -408,6 +408,7 @@ MonoBehaviour:
   agent: {fileID: 669794046}
   target: {fileID: 596171018}
   speed: 1
+  rotatingSpeed: 50
 --- !u!114 &669794045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,7 +711,6 @@ MonoBehaviour:
   rotatingSpeed: 20
   timeBetweenDirections: 2
   speed: 1
-  targetDirection: {x: 0, y: 0}
 --- !u!114 &1020197365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,6 +774,7 @@ MonoBehaviour:
   agent: {fileID: 1072179489}
   target: {fileID: 596171018}
   speed: 1
+  rotatingSpeed: 50
 --- !u!114 &1072179488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -916,6 +917,7 @@ MonoBehaviour:
   agent: {fileID: 1320344715}
   target: {fileID: 596171018}
   speed: 1
+  rotatingSpeed: 50
   radius: 1
 --- !u!114 &1320344714
 MonoBehaviour:

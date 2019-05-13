@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class Arrive : Seek
 
     public override MovementData GetMovement(MovementData currentSteering)
     {
-        if(DistanceVectorToTarget().magnitude <= radius)
+        if(DistanceToTarget(target.position) <= radius)
         {
             return new MovementData();
         }else
