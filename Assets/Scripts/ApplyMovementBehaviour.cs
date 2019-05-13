@@ -31,6 +31,10 @@ public class ApplyMovementBehaviour : MonoBehaviour
 
     private MovementData Apply(MovementData desiredMovement)
     {
+        /*
+         * This class assumes we have a vehicle that can only drive forward and rotate in the desired rotation at a maximum rotationSpeed. 
+         */
+
         MovementData newMovement = new MovementData();
 
         // Calculate and apply rotationAngle;
