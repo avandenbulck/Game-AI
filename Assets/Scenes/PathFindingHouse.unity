@@ -934,6 +934,10 @@ MonoBehaviour:
   arrive: {fileID: 395158788}
   applyMovement: {fileID: 395158790}
   graph: {fileID: 1609075795}
+  applyPathSmoothing: 1
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &395158790
 MonoBehaviour:
   m_ObjectHideFlags: 0

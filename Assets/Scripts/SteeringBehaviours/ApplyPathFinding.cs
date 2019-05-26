@@ -49,7 +49,7 @@ public class ApplyPathFinding : MonoBehaviour
         {
             Transform nextPoint = path[currentIndexOnPath];
             
-            if (Vector2.Distance(applyMovement.agent.position, nextPoint.position) <= 0.01f)
+            if (Vector2.Distance(applyMovement.agent.position, nextPoint.position) <= 0.1f)
             {
                 currentIndexOnPath++;
                 if (currentIndexOnPath == path.Count)
@@ -61,7 +61,7 @@ public class ApplyPathFinding : MonoBehaviour
                     arrive.target = path[currentIndexOnPath];
             }
 
-            // Debug
+            // Debug            
             if (applyPathSmoothing && currentIndexOnPath < path.Count)
             {
                 Debug.DrawLine(arrive.agent.position, path[currentIndexOnPath].position, Color.yellow);
@@ -74,7 +74,7 @@ public class ApplyPathFinding : MonoBehaviour
                 for (int i = 0; i < path.Count - 1; i++)
                 {
                     Debug.DrawLine(path[i].position, path[i + 1].position, Color.red);
-                }                  
+                }
         }    
     }
 
@@ -102,10 +102,11 @@ public class ApplyPathFinding : MonoBehaviour
             {
                 // We need the previous point.
                 newPath.Add(bestNextPointSoFar);
-                currentPosition = bestNextPointSoFar.position;              
+                currentPosition = bestNextPointSoFar.position;
+                bestNextPointSoFar = nextPointToCheck;
             }
 
-            if (i == (path.Count - 1))
+            if (i >= (path.Count - 1))
                 newPath.Add(nextPointToCheck);
         }
 
