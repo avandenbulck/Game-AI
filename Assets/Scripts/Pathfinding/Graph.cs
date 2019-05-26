@@ -26,4 +26,25 @@ public class Graph : MonoBehaviour
 
         return connectedNodes;
     }
+
+    public Transform GetClosestNode(Vector3 goalPosition)
+    {
+        Transform closestNode = connections[0].fromNode;
+        float closestDistance = Vector2.Distance(closestNode.position, goalPosition);
+
+        foreach (Connection connection in connections)
+        {
+            if (Vector2.Distance(connection.fromNode.position, goalPosition) < closestDistance)
+            {
+                closestNode = connection.fromNode;
+                closestDistance = Vector2.Distance(closestNode.position, goalPosition);
+            } else if (Vector2.Distance(connection.toNode.position, goalPosition) < closestDistance)
+            {
+                closestNode = connection.toNode;
+                closestDistance = Vector2.Distance(closestNode.position, goalPosition);
+            }               
+        }
+
+        return closestNode;
+    }
 }

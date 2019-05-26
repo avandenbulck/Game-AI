@@ -1,89 +1,114 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ApplyPathFinding : MonoBehaviour
-{ 
-    public Transform agent;
-    public Arrive movementBehaviour;
-    public float speed;
-    public float rotationSpeed;
+{
+    public Arrive arrive;
+    public ApplyMovementBehaviour applyMovement;
     public Graph graph;
-    public Transform currentNode;
-    public Transform goal;
+    public bool applyPathSmoothing;
+    public LayerMask wallMask;
 
     MovementData currentMovement;
     List<Transform> path;
     bool followingPath = false;
     int currentIndexOnPath;
 
+    public void GoTo(Vector3 goalPosition)
+    {
+        Transform closestNodeToGoal = graph.GetClosestNode(goalPosition);
+        GoTo(closestNodeToGoal);
+    }
+
     public void GoTo(Transform goal)
     {
+        Transform currentNode = graph.GetClosestNode(arrive.agent.position);
         path = Dijkstra.FindPath(graph, currentNode, goal);
+        if (applyPathSmoothing)
+        {
+            path = SmoothPath(arrive.agent.position, path);
+        }
         followingPath = true;
+        applyMovement.enabled = true;
         currentIndexOnPath = 0;
-        movementBehaviour.target = path[0];
+        arrive.target = path[0];
     }
 
     private void Awake()
     {
         currentMovement.velocity = Vector2.zero;
         currentMovement.angle = transform.up;
+        applyMovement.enabled = false;
     }
 
     void Update()
     {
-        if(goal != null)
-        {
-            GoTo(goal);
-            goal = null;
-        }
-
         if (followingPath)
         {
             Transform nextPoint = path[currentIndexOnPath];
             
-            // Get the desired velocity and angle
-            MovementData desiredMovement = movementBehaviour.GetMovement(currentMovement);
-
-            // Apply the desired 
-            currentMovement = Apply(desiredMovement);
-
-            if (Vector2.Distance(agent.position, nextPoint.position) < 0.01f)
+            if (Vector2.Distance(applyMovement.agent.position, nextPoint.position) <= 0.01f)
             {
                 currentIndexOnPath++;
-                if (currentIndexOnPath == path.Count)                
+                if (currentIndexOnPath == path.Count)
+                {
                     followingPath = false;
+                    applyMovement.enabled = false;
+                }                                 
                 else
-                    movementBehaviour.target = path[currentIndexOnPath];
-            }           
+                    arrive.target = path[currentIndexOnPath];
+            }
+
+            // Debug
+            if (applyPathSmoothing && currentIndexOnPath < path.Count)
+            {
+                Debug.DrawLine(arrive.agent.position, path[currentIndexOnPath].position, Color.yellow);
+                for (int i = currentIndexOnPath; i < path.Count - 1; i++)
+                {
+                    Debug.DrawLine(path[i].position, path[i + 1].position, Color.yellow);
+                }
+            }               
+            else
+                for (int i = 0; i < path.Count - 1; i++)
+                {
+                    Debug.DrawLine(path[i].position, path[i + 1].position, Color.red);
+                }                  
         }    
     }
 
-    private MovementData Apply(MovementData desiredMovement)
+    private List<Transform> SmoothPath(Vector3 startPosition, List<Transform> path)
     {
-        /*
-         * This class assumes we have a vehicle that can only drive forward and rotate in the desired rotation at a maximum rotationSpeed. 
-         */
+        if (path.Count <= 1)
+            return path;
 
-        MovementData newMovement = new MovementData();
+        Vector3 currentPosition = startPosition;
+        Transform bestNextPointSoFar = path[0];
+        List<Transform> newPath = new List<Transform>();
 
-        // Calculate and apply rotationAngle;
-        if (desiredMovement.angle != Vector2.zero)
+        for (int i = 1; i < path.Count; i++)
         {
-            float desiredAngleInDegrees = Vector2.SignedAngle(currentMovement.angle, desiredMovement.angle);
-            newMovement.angle = VectorUtilities.Rotate(currentMovement.angle, Mathf.Clamp(desiredAngleInDegrees, -rotationSpeed * Time.deltaTime, rotationSpeed * Time.deltaTime));
-            agent.rotation = Quaternion.LookRotation(Vector3.forward, newMovement.angle);
-        }
-        else
-        {
-            newMovement.angle = currentMovement.angle;
+            Transform nextPointToCheck = path[i];
+            RaycastHit2D hit;
+            hit = Physics2D.Linecast(currentPosition, nextPointToCheck.position, wallMask);
+
+            if(hit.collider == null)
+            {
+                // We don't need the previous point. Replace it with the new point.
+                bestNextPointSoFar = nextPointToCheck;
+            }
+            else
+            {
+                // We need the previous point.
+                newPath.Add(bestNextPointSoFar);
+                currentPosition = bestNextPointSoFar.position;              
+            }
+
+            if (i == (path.Count - 1))
+                newPath.Add(nextPointToCheck);
         }
 
-        // Calculate and apply velocity
-        newMovement.velocity = newMovement.angle * desiredMovement.velocity.magnitude * speed;
-        agent.position += (Vector3)newMovement.velocity * Time.deltaTime;
-
-        return newMovement;
+        return newPath;
     }
 }
